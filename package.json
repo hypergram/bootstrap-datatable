@@ -1,0 +1,16 @@
+{
+  "devDependencies": {
+    "bootstrap-sass": "*",
+    "del": "2.2.2",
+    "gulp": "*",
+    "gulp-jshint": "*",
+    "gulp-rename": "1.2.2",
+    "gulp-sass": "*",
+    "gulp-uglify": "*",
+    "jshint": "2.9.3",
+    "jshint-stylish": "2.2.1"
+  },
+  "gitHead": "0874bcc7e5d5e32b7249a5272c45c03554fc6d64",
+  "name": "bootstrap-datatable",
+  "version": "1.0.0"
+}

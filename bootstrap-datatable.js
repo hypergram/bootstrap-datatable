@@ -357,29 +357,43 @@
               var $cell = $("<td></td>")
                 .addClass(o.columns[column].classname);
 
-              if (o.columns[column].hidden) $cell.hide();
+			if (o.columns[column].hidden) $cell.hide();
 
-              if (o.columns[column].filter && o.columns[column].field) {
-                  var $f = $('<input class="form-control input-sm input-xs input-filter" />')
-                        .attr("name", "filter_" + o.columns[column].field)
-                        .data("filter", o.columns[column].field)
-                        .val(o.filter[o.columns[column].field] || "")
-                        // .change(this, this.runFilter)
-                        .change(function (e) {
-                            o.currentPage = 1;
-                            if (localStorage) {
-                                localStorage[that.localStorageId + '.page'] = o.currentPage;
-                            }
-                            runFilter.call(this, that);
-                        });
-                  if (o.columns[column].fieldType == 'bool')
-                      $f.attr('type', 'checkbox').data("filterType", 'bool').val('True').attr('checked', o.filter[o.columns[column].field] == 'True');
-                  else
-                      $f.attr('type', 'text');
-                  $cell.append($f);
-              }
-
-              $row.append($cell);
+			if (o.columns[column].filter && o.columns[column].field) {
+				var $f = $('<input class="form-control input-sm input-xs input-filter" />')
+					.attr("name", "filter_" + o.columns[column].field)
+					.data("filter", o.columns[column].field)
+					.val(o.filter[o.columns[column].field] || "")
+					// .change(this, this.runFilter)
+					.change(function (e) {
+						o.currentPage = 1;
+						if (localStorage) {
+							localStorage[that.localStorageId + '.page'] = o.currentPage;
+						}
+						runFilter.call(this, that);
+					});
+				if (o.columns[column].fieldType == 'bool')
+					$f.attr('type', 'checkbox').data("filterType", 'bool').val('True').attr('checked', o.filter[o.columns[column].field] == 'True');
+				else if(o.columns[column].fieldType == 'lookup') {
+					$f = $('<select/>')
+						.attr("name", "filter_" + o.columns[column].field)
+						.data("filter", o.columns[column].field)
+						.change(function (e) {
+							o.currentPage = 1;
+							if (localStorage) {
+								localStorage[that.localStorageId + '.page'] = o.currentPage;
+							}
+							runFilter.call(this, that);
+						});
+					o.columns[column].fieldOptions.forEach(function(element) {
+						$f.append('<option value="' +element.value+ '" ' + (o.filter[o.columns[column].field] === element.value ? 'selected' : '') + '>'+element.label+'</option>')
+					}, this);
+				}
+				else
+					$f.attr('type', 'text');
+				$cell.append($f);
+			}
+			$row.append($cell);
           }
           return $row;
       }
